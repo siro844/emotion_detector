@@ -11,6 +11,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadCamera();
+    loadModel();
+  }
 
  CameraImage? cameraImage;
     CameraController? cameraController;
@@ -60,12 +67,35 @@ class _HomeState extends State<Home> {
         
       }
     }
+
+    loadModel() async{
+      await Tflite.loadModel(model: "assets/model.tflite",labels: "assets/labels.txt");
+
+    }
   @override
   Widget build(BuildContext context) {
    
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Emotion Detector')),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+              width: MediaQuery.of(context).size.width,
+              child: !cameraController!.value.isInitialized?Container():
+              AspectRatio(
+                aspectRatio: cameraController!.value.aspectRatio,
+                child: CameraPreview(cameraController!),
+              ),
+            ),
+          ),
+          Text(output,
+          style:const TextStyle(fontWeight: FontWeight.bold) ,)
+        ],
       ),
      
     );
