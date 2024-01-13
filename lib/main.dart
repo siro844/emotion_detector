@@ -1,6 +1,12 @@
+import 'package:camera/camera.dart';
+import 'package:emotion_detector/home.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+
+List<CameraDescription>? camera;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  camera=await availableCameras();
   runApp(const MyApp());
 }
 
@@ -15,6 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.black
       ),
+      home: Home(),
      
     );
   }
